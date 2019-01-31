@@ -11,6 +11,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles'
+import { Link } from 'react-router-dom'
 // import ListItemTextStyle from '@material-ui/core/ListItemTextStyle';
 
 const styles = {
@@ -51,13 +52,24 @@ class NavBar extends React.Component {
     };
     return(
         <div>
-        <AppBar onClick={this.toggleDrawer} position="static">
+        <AppBar  position="static">
             <Toolbar>
                 <Menu  onClick={this.toggleDrawer} color="inherit" arai-label="Menu"></Menu>
                 <Typography variant="title" style={AppBarStyles} color="inherit">
                   Muktek
                 </Typography>
-                <Button>LogIn</Button>
+                <div className="navbar">
+                  <Link to="/"  color="inherit" arai-label="Menu">
+                    <Typography variant="title" style={AppBarStyles} color="inherit">
+                      Home
+                    </Typography>
+                  </Link>
+                  <Link to="/login"  color="inherit" arai-label="Menu">
+                    <Typography variant="title" style={AppBarStyles} color="inherit">
+                      LogIn
+                    </Typography>
+                  </Link>
+                </div>
             </Toolbar>
             <Drawer open={this.state.open} onClose={ this.toggleDrawe }>
               <div
@@ -71,11 +83,11 @@ class NavBar extends React.Component {
                     <ListItemText style={ListItemTextStyle} primary="Features" />
                   </ListItem>
                   <ListItem button>
-                    Users
+                    <Link to="/users">Users</Link>
                   </ListItem>
                   <Divider />
                   <ListItem button>
-                    Treatments
+                    <Link to="/treatments">Treatments</Link>
                   </ListItem>
                 </List>
               </div>
