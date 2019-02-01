@@ -1,14 +1,54 @@
 import React, { Component } from 'react';
+import AddCircle from '@material-ui/icons/AddCircle'
+import { Link } from 'react-router-dom'
+
+
 // import './App.css';
+import request from 'superagent';
+const URL = 'https://young-wildwood-11812.herokuapp.com/api/v1/users'
 
 class Users extends Component {
   constructor() {
     super();
+
+    this.state = {
+      users:[]
+    }
   }
+
+  componentDidMount() {
+    request.get(URL)
+    .then((serverResult) => {
+      console.log(serverResult.body.data)
+      var allUsers = serverResult.body.data
+      this.setState({
+        users:allUsers
+      })
+    })
+  }
+
+
   render() {
     return (
       <div>
-        <h1>This is Users</h1>
+        <table>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+          </tr>
+            {this.state.users.map(user => {
+              return (
+                <tr>
+                  <th>{user._id}</th>
+                  <th>{user.name}</th>
+                  <th>{user.email}</th>
+                </tr>
+
+              );
+          })}
+        </table>
+        <Link to='/login'><AddCircle></AddCircle></Link>
       </div>
     );
   }

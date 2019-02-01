@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import request from 'superagent';
+import superagent from 'superagent';
 
 
 class LogIn extends Component{
@@ -9,11 +9,39 @@ class LogIn extends Component{
     super(props)
         this.state = {
             firstForm: true,
-            secondForm: false
+            secondForm: false,
+            name: '',
+            email: '',
+            redirect: false
         }
     }
 
+    onChangeInput = event => {
+      const {id, value } = event.target
+      console.log(id)
+      console.log(value)
+      this.setState({
+        [id]:value
+      })
+    }
 
+    onSubmitHandle = e => {
+      e.preventDefault()
+
+      if(!this.state.showLogIn) {
+
+        const json = {
+          name: this.state.name,
+          email: this.state.email
+        }
+
+        console.log(json)
+        superagent.post('https://young-wildwood-11812.herokuapp.com/api/v1/users')
+        .send(json)
+        .then(res => alert('User saved'))
+        .catch(e => alert(e))
+      }
+    }
 
     showFirstForm = () => {
       this.setState({
@@ -54,21 +82,20 @@ class LogIn extends Component{
 
   {this.state.secondForm &&
     <div style={formStyles}>
-      <form onSubmit={ this.login }>
+      <form onSubmit={ this.onSubmitHandle }>
              <TextField
                required
-               name="Name"
+               id="name"
                label="Name"
                fullWidth
-               // onChange={ this.handleChange }
+               onChange={ this.onChangeInput }
              />
              <TextField
                required
-               name="Email"
-               type="password"
+               id="email"
                label="Email"
                fullWidth
-               // onChange={ this.handleChange }
+               onChange={ this.onChangeInput }
              />
              <Button type='submit'  variant='contained'>Record</Button>
            </form>
